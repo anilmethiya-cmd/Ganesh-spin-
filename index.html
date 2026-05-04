@@ -4,27 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shri Ganesh Readymade Lucky Spin</title>
+
 <style>
 body{
-  font-family:Arial;
-  text-align:center;
-  background:#f8f1dd;
   margin:0;
   padding:20px;
+  text-align:center;
+  font-family:Arial;
+  background:#f8f1dd;
 }
+
 h1{
-  font-size:34px;
-  margin-top:30px;
+  font-size:32px;
+  margin-top:25px;
 }
+
 p{
   font-size:22px;
 }
+
 #wheel{
   width:280px;
   height:280px;
   border-radius:50%;
-  border:10px solid #333;
   margin:30px auto;
+  border:10px solid #333;
   background:conic-gradient(
     #ff4d4d 0deg 60deg,
     #ffd11a 60deg 120deg,
@@ -33,23 +37,26 @@ p{
     #ff66cc 240deg 300deg,
     #ff944d 300deg 360deg
   );
-  transition:transform 4s ease-out;
+  transition: all 4s ease-out;
 }
+
 button{
-  padding:15px 35px;
-  font-size:24px;
-  border:none;
-  border-radius:12px;
   background:red;
   color:white;
+  border:none;
+  border-radius:12px;
+  padding:18px 40px;
+  font-size:28px;
 }
+
 #result{
-  font-size:30px;
   margin-top:25px;
+  font-size:34px;
   font-weight:bold;
 }
 </style>
 </head>
+
 <body>
 
 <h1>श्री गणेश रेडीमेड लकी स्पिन</h1>
@@ -62,7 +69,8 @@ button{
 <div id="result"></div>
 
 <script>
-let done=false;
+let done = false;
+let currentDeg = 0;
 
 function spin(){
   if(done){
@@ -70,9 +78,9 @@ function spin(){
     return;
   }
 
-  done=true;
+  done = true;
 
-  let prizes=[
+  let prizes = [
     "🎁 5% Discount",
     "🎉 10% Discount",
     "🥳 Gift Free",
@@ -81,16 +89,16 @@ function spin(){
     "🎁 Surprise Gift"
   ];
 
-  let num=Math.floor(Math.random()*prizes.length);
-  let deg=1800 + (num*60);
+  let num = Math.floor(Math.random()*prizes.length);
 
-  document.getElementById("wheel").style.transform=
-    "rotate("+deg+"deg)";
+  currentDeg += 2160 + (num*60);
 
-  setTimeout(()=>{
-    document.getElementById("result").innerHTML=
-      prizes[num];
-  },4000);
+  document.getElementById("wheel").style.transform =
+    "rotate(" + currentDeg + "deg)";
+
+  setTimeout(function(){
+    document.getElementById("result").innerHTML = prizes[num];
+  }, 4000);
 }
 </script>
 

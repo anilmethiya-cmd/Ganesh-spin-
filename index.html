@@ -1,41 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shri Ganesh Readymade Lucky Spin</title>
 <style>
-body{font-family:Arial;text-align:center;background:#fff8e7;padding:20px}
-button{padding:15px 25px;font-size:22px;background:#e63946;color:white;border:none;border-radius:10px}
-#result{font-size:30px;margin-top:25px;font-weight:bold;color:#222}
+body{
+  font-family:Arial;
+  text-align:center;
+  background:#f8f1dd;
+  margin:0;
+  padding:20px;
+}
+h1{
+  font-size:34px;
+  margin-top:30px;
+}
+p{
+  font-size:22px;
+}
+#wheel{
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  border:10px solid #333;
+  margin:30px auto;
+  background:conic-gradient(
+    #ff4d4d 0deg 60deg,
+    #ffd11a 60deg 120deg,
+    #66ff66 120deg 180deg,
+    #4da6ff 180deg 240deg,
+    #ff66cc 240deg 300deg,
+    #ff944d 300deg 360deg
+  );
+  transition:transform 4s ease-out;
+}
+button{
+  padding:15px 35px;
+  font-size:24px;
+  border:none;
+  border-radius:12px;
+  background:red;
+  color:white;
+}
+#result{
+  font-size:30px;
+  margin-top:25px;
+  font-weight:bold;
+}
 </style>
 </head>
 <body>
+
 <h1>श्री गणेश रेडीमेड लकी स्पिन</h1>
 <p>₹2500+ की खरीदारी करें और स्पिन करके जीतें!</p>
+
+<div id="wheel"></div>
+
 <button onclick="spin()">SPIN</button>
+
 <div id="result"></div>
 
 <script>
-let used=false;
-let prizes=[
-"5% Off",
-"Socks Free",
-"Better Luck Next Time",
-"Mystery Gift",
-"₹50 Off",
-"5% Off Next Visit"
-];
+let done=false;
 
 function spin(){
- if(used){
-   alert("इस स्कैन पर 1 स्पिन हो चुका है");
-   return;
- }
- used=true;
- let prize=prizes[Math.floor(Math.random()*prizes.length)];
- document.getElementById("result").innerHTML="🎉 "+prize;
+  if(done){
+    alert("एक बार spin हो चुका है");
+    return;
+  }
+
+  done=true;
+
+  let prizes=[
+    "🎁 5% Discount",
+    "🎉 10% Discount",
+    "🥳 Gift Free",
+    "💥 Better Luck Next Time",
+    "🎊 15% Discount",
+    "🎁 Surprise Gift"
+  ];
+
+  let num=Math.floor(Math.random()*prizes.length);
+  let deg=1800 + (num*60);
+
+  document.getElementById("wheel").style.transform=
+    "rotate("+deg+"deg)";
+
+  setTimeout(()=>{
+    document.getElementById("result").innerHTML=
+      prizes[num];
+  },4000);
 }
 </script>
+
 </body>
 </html>

@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shri Ganesh Readymade Lucky Spin</title>
-
+<title>Lucky Spin</title>
 <style>
 body{
   margin:0;
@@ -13,22 +12,33 @@ body{
   font-family:Arial;
   background:#f8f1dd;
 }
+h1{font-size:32px;}
+p{font-size:22px;}
 
-h1{
-  font-size:32px;
-  margin-top:25px;
+.pointer{
+  width:0;
+  height:0;
+  margin:10px auto -10px;
+  border-left:20px solid transparent;
+  border-right:20px solid transparent;
+  border-top:35px solid red;
 }
 
-p{
-  font-size:22px;
+.wheel-box{
+  position:relative;
+  width:320px;
+  height:320px;
+  margin:20px auto;
 }
 
 #wheel{
-  width:280px;
-  height:280px;
+  width:320px;
+  height:320px;
   border-radius:50%;
-  margin:30px auto;
   border:10px solid #333;
+  position:relative;
+  overflow:hidden;
+  transition:transform 4s ease-out;
   background:conic-gradient(
     #ff4d4d 0deg 60deg,
     #ffd11a 60deg 120deg,
@@ -37,16 +47,32 @@ p{
     #ff66cc 240deg 300deg,
     #ff944d 300deg 360deg
   );
-  transition: all 4s ease-out;
 }
 
+.label{
+  position:absolute;
+  width:120px;
+  left:100px;
+  top:18px;
+  font-size:15px;
+  font-weight:bold;
+  color:#000;
+}
+
+.l1{transform:rotate(30deg) translateY(20px);}
+.l2{transform:rotate(90deg) translateY(20px);}
+.l3{transform:rotate(150deg) translateY(20px);}
+.l4{transform:rotate(210deg) translateY(20px);}
+.l5{transform:rotate(270deg) translateY(20px);}
+.l6{transform:rotate(330deg) translateY(20px);}
+
 button{
-  background:red;
-  color:white;
-  border:none;
-  border-radius:12px;
   padding:18px 40px;
   font-size:28px;
+  border:none;
+  border-radius:12px;
+  background:red;
+  color:white;
 }
 
 #result{
@@ -56,21 +82,31 @@ button{
 }
 </style>
 </head>
-
 <body>
 
 <h1>श्री गणेश रेडीमेड लकी स्पिन</h1>
 <p>₹2500+ की खरीदारी करें और स्पिन करके जीतें!</p>
 
-<div id="wheel"></div>
+<div class="pointer"></div>
+
+<div class="wheel-box">
+  <div id="wheel">
+    <div class="label l1">5% Discount</div>
+    <div class="label l2">10% Discount</div>
+    <div class="label l3">Gift Free</div>
+    <div class="label l4">Better Luck</div>
+    <div class="label l5">15% Discount</div>
+    <div class="label l6">Surprise Gift</div>
+  </div>
+</div>
 
 <button onclick="spin()">SPIN</button>
 
 <div id="result"></div>
 
 <script>
-let done = false;
-let currentDeg = 0;
+let done=false;
+let current=0;
 
 function spin(){
   if(done){
@@ -78,27 +114,27 @@ function spin(){
     return;
   }
 
-  done = true;
+  done=true;
 
-  let prizes = [
+  let prizes=[
     "🎁 5% Discount",
     "🎉 10% Discount",
     "🥳 Gift Free",
-    "💥 Better Luck Next Time",
+    "💥 Better Luck",
     "🎊 15% Discount",
     "🎁 Surprise Gift"
   ];
 
-  let num = Math.floor(Math.random()*prizes.length);
+  let num=Math.floor(Math.random()*6);
 
-  currentDeg += 2160 + (num*60);
+  current += 2160 + (num*60);
 
   document.getElementById("wheel").style.transform =
-    "rotate(" + currentDeg + "deg)";
+  "rotate("+current+"deg)";
 
-  setTimeout(function(){
+  setTimeout(()=>{
     document.getElementById("result").innerHTML = prizes[num];
-  }, 4000);
+  },4000);
 }
 </script>
 

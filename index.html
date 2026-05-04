@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -13,36 +12,19 @@ body{
   font-family:Arial,sans-serif;
   background:#f8f1dd;
 }
-h1{
-  font-size:32px;
-  margin-top:20px;
-}
-p{
-  font-size:22px;
-  margin:20px 0;
-}
+h1{font-size:34px;}
+p{font-size:22px;}
 .pointer{
-  width:0;
-  height:0;
+  width:0;height:0;
   border-left:22px solid transparent;
   border-right:22px solid transparent;
   border-top:40px solid red;
-  margin:10px auto -5px;
-  z-index:10;
-  position:relative;
+  margin:10px auto;
 }
-.wheel-box{
-  position:relative;
-  width:320px;
-  height:320px;
-  margin:0 auto;
-}
-#wheel{
-  width:320px;
-  height:320px;
+canvas{
+  background:#fff8ea;
   border-radius:50%;
-  border:10px solid #333;
-  transition:transform 4s ease-out;
+  border:12px solid #333;
 }
 button{
   margin-top:25px;
@@ -51,7 +33,7 @@ button{
   border:none;
   border-radius:15px;
   background:red;
-  color:#fff;
+  color:white;
 }
 #result{
   margin-top:25px;
@@ -66,75 +48,71 @@ button{
 <p>₹2500+ की खरीदारी करें और स्पिन करके जीतें!</p>
 
 <div class="pointer"></div>
-
-<div class="wheel-box">
-<canvas id="wheel" width="320" height="320"></canvas>
-</div>
-
+<canvas id="wheel" width="320" height="320"></canvas><br>
 <button onclick="spin()">SPIN</button>
-
 <div id="result"></div>
 
 <script>
 const prizes = [
-"5% Discount",
-"10% Discount",
-"15% Discount",
-"20% Discount",
-"Gift Free",
-"Better Luck"
+"Better Luck Next Time",
+"Socks Free",
+"Mystery Box",
+"₹50 Off",
+"5% Off",
+"5% Off Next Visit"
 ];
 
-const colors = [
-"#ff4d4d",
-"#ffd11a",
-"#66ff5c",
-"#4d9be6",
-"#e65cc2",
-"#fa924a"
+// weight
+const weighted = [
+0,0,0,0,0,0,0,   // Better Luck 35%
+1,1,1,1,         // Socks 20%
+2,2,             // Mystery 10%
+3,3,3,           // ₹50 Off 15%
+4,4,             // 5% Off 10%
+5,5              // Next Visit 10%
 ];
 
-const canvas = document.getElementById("wheel");
-const ctx = canvas.getContext("2d");
-const center = 160;
-const radius = 150;
+const colors=["#ff5757","#ffd93d","#63ff63","#5ca9ff","#e86cff","#ff9a4d"];
 
-function drawWheel(){
-  const slice = (2*Math.PI)/prizes.length;
+const canvas=document.getElementById("wheel");
+const ctx=canvas.getContext("2d");
+const center=160;
+const radius=150;
+const slice=(2*Math.PI)/6;
 
-  for(let i=0;i<prizes.length;i++){
-    ctx.beginPath();
-    ctx.moveTo(center,center);
-    ctx.arc(center,center,radius,i*slice,(i+1)*slice);
-    ctx.fillStyle = colors[i];
-    ctx.fill();
+function draw(){
+for(let i=0;i<6;i++){
+ctx.beginPath();
+ctx.moveTo(center,center);
+ctx.arc(center,center,radius,i*slice,(i+1)*slice);
+ctx.fillStyle=colors[i];
+ctx.fill();
 
-    ctx.save();
-    ctx.translate(center,center);
-    ctx.rotate(i*slice + slice/2);
-    ctx.fillStyle="black";
-    ctx.font="bold 18px Arial";
-    ctx.textAlign="right";
-    ctx.fillText(prizes[i],130,8);
-    ctx.restore();
-  }
+ctx.save();
+ctx.translate(center,center);
+ctx.rotate(i*slice+slice/2);
+ctx.fillStyle="#000";
+ctx.font="bold 15px Arial";
+ctx.textAlign="right";
+ctx.fillText(prizes[i],130,5);
+ctx.restore();
 }
-drawWheel();
+}
+draw();
 
-let angle = 0;
+let current=0;
 
 function spin(){
-  const random = Math.floor(Math.random()*prizes.length);
-  const slice = 360/prizes.length;
-  angle += 1800 + (360 - random*slice - slice/2);
+let pick = weighted[Math.floor(Math.random()*weighted.length)];
+let target = 360 - (pick*60 + 30);
+current += 1800 + target;
 
-  document.getElementById("wheel").style.transform =
-  `rotate(${angle}deg)`;
+document.getElementById("wheel").style.transition="transform 4s ease-out";
+document.getElementById("wheel").style.transform=`rotate(${current}deg)`;
 
-  setTimeout(()=>{
-    document.getElementById("result").innerHTML =
-    "🎉 " + prizes[random];
-  },4000);
+setTimeout(()=>{
+document.getElementById("result").innerHTML="🎉 "+prizes[pick];
+},4000);
 }
 </script>
 

@@ -1,80 +1,58 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucky Spin</title>
+<title>Shri Ganesh Lucky Spin</title>
 <style>
 body{
   margin:0;
   padding:20px;
   text-align:center;
-  font-family:Arial;
+  font-family:Arial,sans-serif;
   background:#f8f1dd;
 }
-h1{font-size:32px;}
-p{font-size:22px;}
-
+h1{
+  font-size:32px;
+  margin-top:20px;
+}
+p{
+  font-size:22px;
+  margin:20px 0;
+}
 .pointer{
   width:0;
   height:0;
-  margin:10px auto -10px;
-  border-left:20px solid transparent;
-  border-right:20px solid transparent;
-  border-top:35px solid red;
+  border-left:22px solid transparent;
+  border-right:22px solid transparent;
+  border-top:40px solid red;
+  margin:10px auto -5px;
+  z-index:10;
+  position:relative;
 }
-
 .wheel-box{
   position:relative;
   width:320px;
   height:320px;
-  margin:20px auto;
+  margin:0 auto;
 }
-
 #wheel{
   width:320px;
   height:320px;
   border-radius:50%;
   border:10px solid #333;
-  position:relative;
-  overflow:hidden;
   transition:transform 4s ease-out;
-  background:conic-gradient(
-    #ff4d4d 0deg 60deg,
-    #ffd11a 60deg 120deg,
-    #66ff66 120deg 180deg,
-    #4da6ff 180deg 240deg,
-    #ff66cc 240deg 300deg,
-    #ff944d 300deg 360deg
-  );
 }
-
-.label{
-  position:absolute;
-  width:120px;
-  left:100px;
-  top:18px;
-  font-size:15px;
-  font-weight:bold;
-  color:#000;
-}
-
-.l1{transform:rotate(30deg) translateY(20px);}
-.l2{transform:rotate(90deg) translateY(20px);}
-.l3{transform:rotate(150deg) translateY(20px);}
-.l4{transform:rotate(210deg) translateY(20px);}
-.l5{transform:rotate(270deg) translateY(20px);}
-.l6{transform:rotate(330deg) translateY(20px);}
-
 button{
-  padding:18px 40px;
+  margin-top:25px;
+  padding:18px 55px;
   font-size:28px;
   border:none;
-  border-radius:12px;
+  border-radius:15px;
   background:red;
-  color:white;
+  color:#fff;
 }
-
 #result{
   margin-top:25px;
   font-size:34px;
@@ -90,14 +68,7 @@ button{
 <div class="pointer"></div>
 
 <div class="wheel-box">
-  <div id="wheel">
-    <div class="label l1">5% Discount</div>
-    <div class="label l2">10% Discount</div>
-    <div class="label l3">Gift Free</div>
-    <div class="label l4">Better Luck</div>
-    <div class="label l5">15% Discount</div>
-    <div class="label l6">Surprise Gift</div>
-  </div>
+<canvas id="wheel" width="320" height="320"></canvas>
 </div>
 
 <button onclick="spin()">SPIN</button>
@@ -105,35 +76,64 @@ button{
 <div id="result"></div>
 
 <script>
-let done=false;
-let current=0;
+const prizes = [
+"5% Discount",
+"10% Discount",
+"15% Discount",
+"20% Discount",
+"Gift Free",
+"Better Luck"
+];
+
+const colors = [
+"#ff4d4d",
+"#ffd11a",
+"#66ff5c",
+"#4d9be6",
+"#e65cc2",
+"#fa924a"
+];
+
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+const center = 160;
+const radius = 150;
+
+function drawWheel(){
+  const slice = (2*Math.PI)/prizes.length;
+
+  for(let i=0;i<prizes.length;i++){
+    ctx.beginPath();
+    ctx.moveTo(center,center);
+    ctx.arc(center,center,radius,i*slice,(i+1)*slice);
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(center,center);
+    ctx.rotate(i*slice + slice/2);
+    ctx.fillStyle="black";
+    ctx.font="bold 18px Arial";
+    ctx.textAlign="right";
+    ctx.fillText(prizes[i],130,8);
+    ctx.restore();
+  }
+}
+drawWheel();
+
+let angle = 0;
 
 function spin(){
-  if(done){
-    alert("एक बार spin हो चुका है");
-    return;
-  }
-
-  done=true;
-
-  let prizes=[
-    "🎁 5% Discount",
-    "🎉 10% Discount",
-    "🥳 Gift Free",
-    "💥 Better Luck",
-    "🎊 15% Discount",
-    "🎁 Surprise Gift"
-  ];
-
-  let num=Math.floor(Math.random()*6);
-
-  current += 2160 + (num*60);
+  const random = Math.floor(Math.random()*prizes.length);
+  const slice = 360/prizes.length;
+  angle += 1800 + (360 - random*slice - slice/2);
 
   document.getElementById("wheel").style.transform =
-  "rotate("+current+"deg)";
+  `rotate(${angle}deg)`;
 
   setTimeout(()=>{
-    document.getElementById("result").innerHTML = prizes[num];
+    document.getElementById("result").innerHTML =
+    "🎉 " + prizes[random];
   },4000);
 }
 </script>
